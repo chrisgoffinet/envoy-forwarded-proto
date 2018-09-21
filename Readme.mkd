@@ -1,0 +1,31 @@
+## Steps to reproduce the bug:
+
+* Install Docker
+* Install a debugging-friendly HTTP client (e.g. https://httpie.org/ )
+* Enable Swarm Mode: `docker swarm init`
+* Deploy the stack: `docker stack up -c stack.yaml http`
+  - This will listen on port 2100 & 2101
+* Access endpoints `:2101/yes` with an extra header
+    `X-Forwarded-Proto: https`:
+
+```sh
+# With httpie:
+http :2101/yes x-forwarded-proto:https show_env==1
+# With curl:
+curl 127.0.0.1:2101/yes -H x-forwarded-proto:https
+```
+
+## Expected result
+
+* `:2101/yes` should respond with `yes https`, which is configured
+    as direct_response
+
+## Actual result
+
+* `:2101/yes` responds with `yes`
+
+## Extra Debugging
+
+* Accessing endpoint `:2101/bin/headers?show_env=1` returns all
+    headers sent from Envoy to httpbin. Which shows that
+    header `X-Forwarded-Proto` is overwritten.

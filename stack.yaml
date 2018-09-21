@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  envoy:
+    image: envoyproxy/envoy-alpine:latest
+    environment:
+      loglevel: warning
+    ports:
+      - "2100:2100"
+      - "2101:2101"
+    configs:
+      - source: envoy-v1
+        target: /etc/envoy/envoy.yaml
+  httpbin:
+    image: kennethreitz/httpbin:latest
+
+configs:
+  envoy-v1:
+    file: envoy.yaml
