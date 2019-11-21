@@ -9,20 +9,9 @@
     `X-Forwarded-Proto: https`:
 
 ```sh
-# With httpie:
-http :2101/yes x-forwarded-proto:https show_env==1
 # With curl:
-curl 127.0.0.1:2101/yes -H x-forwarded-proto:https
+curl 127.0.0.1:2101/yes
 ```
-
-## Expected result
-
-* `:2101/yes` should respond with `yes https`, which is configured
-    as direct_response
-
-## Actual result
-
-* `:2101/yes` responds with `yes`
 
 ## Extra Debugging
 
